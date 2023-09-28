@@ -15,7 +15,9 @@
   border-radius: 5px;
 }
 
-
+.text{
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
 
 .body2{
   border: 2px solid #ccc;
@@ -26,6 +28,7 @@
   border-radius: 5px;
   text-align: center;
   background-color: #f2f2f2;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 
  }
 
@@ -81,7 +84,7 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
   width: 98%;
-  border: 1px solid ;
+  border: 1px solid #ccc ;
   margin-bottom: 25px;
   margin-left: 10px;
 }
@@ -138,7 +141,7 @@ input[type="text"],input[type="number"],select {
   font-weight: bold;
   width: 5%;
   margin-right: 10px;
-  border: 1px solid black;
+  border: 1px solid gray;
   border-radius: 10px;
   
 }
@@ -156,7 +159,7 @@ input[type="text"],input[type="number"],select {
   text-decoration: none;
   display: inline-block;
   text-align: center;
-  border: 1px solid black;
+  border: 1px solid gray;
 
 }
 
@@ -198,6 +201,7 @@ input[type="text"],input[type="number"],select {
   text-align: center;
   margin-bottom: 80%;
   border: 1px solid blue; /* Gray */
+  margin-right: 10px;
 
 }
 
@@ -256,7 +260,7 @@ input[type="text"],input[type="number"],select {
   margin-left: 940px;
   margin-bottom: 10px;
   color: white;
-  background-color:red;
+  background-color:dimgray;
   padding: 10px;
   height: 45px;
   font-size: 15px;

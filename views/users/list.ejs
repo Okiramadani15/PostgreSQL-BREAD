@@ -15,7 +15,7 @@
   <a href="/upload/<%=usersid%>">    
     <img src="/images/<%= avatar ? avatar : 'avatr.png' %>" class="rounded-circle" alt="avatar" width="150px" height="150px"/>
   </a>
-<h1>welcome, <%= users.email %> </h1>
+<h1 class="text">welcome, <%= users.email %> </h1>
 <a  href="/logout" class="logout" ><img src="/images/lgout.png"/>logout</a>
 </div>
 </div>
@@ -25,7 +25,7 @@
       </div>
       <!-- search -->
       <div>
-        <form action="/" method="get" class="add-container">
+        <form action="" method="get" class="add-container">
           <div class="row">
             <div class="col-20">
               <label for="name">Title</label>
@@ -49,13 +49,13 @@
               <label for="married">Complete</label>
             </div>
             <div class="col-80">
-              <%if(query.complete=='true' ){ %>
+              <%if(query.complete=='done' ){ %>
               <select name="complete" id="complete">
                 <option disabled>-select complete-</option>
                 <option value="Done" selected>Done</option>
                 <option value="Not Yet">No Yet</option>
               </select>
-              <% } else if (query.complete=='false' ){ %>
+              <% } else if (query.complete=='not yet' ){ %>
               <select name="complete" id="complete">
                 <option disabled>-select complete-</option>
                 <option value="Done">Done</option>
@@ -93,7 +93,7 @@
           <!--submit button-->
           <div>
             <button type="submit" class="add-search"><img src="/images/sch.png"></button>
-            <a  class="add-reset" href="/"><img src="/images/re.png"></a>
+            <a  class="add-reset" href="/todos"><img src="/images/re.png"></a>
           </div>
         </form>
       </div>
@@ -101,9 +101,9 @@
         <thead>
           <tr>
             <th>No.</th>
-            <th>Title</th>
-            <th>Complete</th>
-            <th>Deadline</th>
+            <th>Title <a href="/todos?page=1&sort=title&typeSort=asc"><img src="/images/caretup.svg"></a><a href="/todos?page=1&sort=title&typeSort=desc"><img src="/images/caretdown.svg"></a></th>
+            <th>Complete <a href="/todos?page=1&sort=complete&typeSort=asc"><img src="/images/caretup.svg"></a><a href="/todos?page=1&sort=complete&typeSort=desc"><img src="/images/caretdown.svg"></a></th>
+            <th>Deadline <a href="/todos?page=1&sort=deadline&typeSort=asc"><img src="/images/caretup.svg"></a><a href="/todos?page=1&sort=deadline&typeSort=desc"><img src="/images/caretdown.svg"></a></th>
             <th>Action</th>
           </tr>
         </thead>
@@ -111,12 +111,23 @@
           <% data.forEach((daftar, index)=>{ %>
             <% if (new Date(`${daftar.deadline}`).getTime()< new Date().getTime() && daftar.complete == false){ %>
           <tr>
-            <td><%= index + offset + 1 %></td>
-            <td><%= daftar.title %></td>
-            <td><%= daftar.complete ? 'Done' : 'Not yet' %></td>
-            <td><%= moment(daftar.deadline).format('MMMM Do YYYY, h:mm:ss a') %></td>
-            <td><a  href="/todos/edit/<%= daftar.id %>" class="btn-update"><img src="/images/updt.png"></a>
-              <a href="/todos/delete/<%= daftar.id %>" onclick="return confirmation('<%= daftar.name %>')" class="btn-delete"><img src="/images/dlet.png"></a></td>
+            <td style="background-color: red;">
+              <%= index + offset + 1 %>
+            </td>
+
+            <td style="background-color: red;">
+              <%= daftar.title %>
+            </td>
+            <td style="background-color: red;">
+              <%= daftar.complete ? 'Done' : 'Not yet' %>
+            </td>
+            <td style="background-color: red;">
+              <%= moment(daftar.deadline).format('MMMM Do YYYY, h:mm:ss a') %>
+            </td>
+            <td style="background-color: red;">
+              <a  href="/todos/edit/<%= daftar.id %>" class="btn-update"><img src="/images/updt.png"></a>
+              <a href="/todos/delete/<%= daftar.id %>" onclick="return confirmation('<%= daftar.name %>')" class="btn-delete"><img src="/images/dlet.png"></a>
+            </td>
           </tr>
           <% } else {%>
             <tr>

@@ -7,7 +7,7 @@ var { isLoggedIn } = require("../helpers/util");
 
 module.exports = function (db) {
   router.get("/", isLoggedIn, async function (req, res, next) {
-    const { page = 1, title, startDate, endDate, complete, type_search = "id", sort = "desc" } = req.query;
+    const { page = 1, title, startDate, endDate, complete, type_search = "id", sort = "", typeSort="" } = req.query;
     const {usersid} = req.session.users
     const queries = [];
     const params = [];
@@ -15,7 +15,7 @@ module.exports = function (db) {
     const paramscount = [];
     const limit = 5;
     const offset = (page - 1) * 5;
-    let typeSort;
+    
 
     const { rows : profil } = await db.query('SELECT * FROM users WHERE id = $1', [req.session.users.usersid]);
     console.log(profil)
@@ -56,12 +56,12 @@ module.exports = function (db) {
     }
 
     if (sort) {
-      sql += ` ORDER BY id ${sort}`;
-      typeSort = sort.replace(" ", "+");
+      sql += ` ORDER BY ${sort} ${typeSort}`;
     }
 
     params.push(limit, offset);
     sql += ` LIMIT $${params.length - 1} OFFSET $${params.length}`;
+    console.log(sql)
 
     db.query(sqlcount, paramscount, (err, { rows: data }) => {
       if (err) res.send(err);
@@ -114,6 +114,7 @@ module.exports = function (db) {
     const index = req.params.index;
     console.log(req.body)
     const { title, deadline, complete } = req.body;
+    console.log(req.body)
     db.query("UPDATE todos SET title = $1, complete = $2, deadline = $3 WHERE id = $4", [title, Boolean(complete), deadline, index], (err, data) => {
       if (err) res.send(err);
       else res.redirect("/todos");
