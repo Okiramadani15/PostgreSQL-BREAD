@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>avatar</title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head> 
+<body>
+    <div class="avatar">
+        <h1>Change avatar</h1>
+        <form  action="" method="post" encType="multipart/form-data">
+            <div class="mb-3" >
+            <div class="row">
+                <div class="col-20">
+                <label for="formGroupExampleInput" class="form-label">Avatar</label>
+            </div>
+            <div class="col-80">
+                <input accept="image/*" class="form-control" type="file" id="imgInp" name="avatar" />
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="row">
+                <div class="col-20">
+                <label for="formGroupExampleInput" class="form-label">preview</label>
+                <img id="blah" src="/images/avatr.png" alt="defaultAvatar"width="300px" height="300px" />
+                <script>
+                    imgInp.onchange = evt => {
+                    const [file] = imgInp.files
+                    if (file) {
+                      blah.src = URL.createObjectURL(file)
+                    }
+                  }
+                </script>
+                
+                </div>
+            </div>
+        </form>
+        </div>
+        <div>
+            <button type="submit" class="add-save"><img src="/images/ssve.png"></button>&nbsp;
+            <a  class="add-reset" href="/"><img src="/images/rest.png"></a>
+        </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

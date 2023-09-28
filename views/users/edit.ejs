@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Data</title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+    <form action="" method="post" class="add-container" >
+        <label for="title">title</label>
+        <input type="text" class="add-box" name="title" placeholder="insert your title" value="<%= item.title %>" required/>
+        <label for="deadline">Deadline</label>
+        <input type="date" class="add-box" name = 'birthdate' placeholder="yyyy/mm/dd" value="<%= item.deadline %>" required/>
+        <label for="complete">done</label>
+        <select name="complete" class="add-box" required>
+            <option disabled selected><%= item.complete %></option>
+            <option value="Done">Done</option>
+            <option value="Not Yet">Not Yet</option>
+        </select>
+        <div>
+        <button type="submit" class="add-save"><img src="/images/ssve.png"/></button>&nbsp;
+        <button class="add-cancel" href="/" ><img src="/images/rounded.png"/></button>
+    </div>
+    </form>
+</body>
+
+</html>

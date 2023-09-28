@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BREAD</title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+
+  <body>
+    <div class="welcome">
+      <%- include('../partials/alert')%>
+  <div class="profil">
+  <a href="/upload/<%=usersid%>">    
+    <img src="/images/<%= avatar ? avatar : 'avatr.png' %>" class="rounded-circle" alt="avatar" width="150px" height="150px"/>
+  </a>
+<h1>welcome, <%= users.email %> </h1>
+<a  href="/logout" class="logout" ><img src="/images/lgout.png"/>logout</a>
+</div>
+</div>
+    <div class="body2">
+      <div class="h2" >
+        <h2>postgreSQL BREAD (Browse,Read,Edit,Add,Delete)and pagination</h2>
+      </div>
+      <!-- search -->
+      <div>
+        <form action="/" method="get" class="add-container">
+          <div class="row">
+            <div class="col-20">
+              <label for="name">Title</label>
+            </div>
+            <div class="col-80">
+              <input type="text" class="add-box" name="name" placeholder="insert your title" value="<%= query.name %>" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-20">
+              <label for="birthdate">Deadline</label>
+            </div>
+            <div class="col-80">
+              <input type="date" class="add-box" name="startdate" placeholder="dd/mm/yyyy" value="<%= query.startdate %>" />
+              s.d
+              <input type="date" class="add-box" name="enddate" placeholder="dd/mm/yyyy" value="<%= query.enddate %>" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-20">
+              <label for="married">Complete</label>
+            </div>
+            <div class="col-80">
+              <%if(query.complete=='true' ){ %>
+              <select name="complete" id="complete">
+                <option disabled>-select complete-</option>
+                <option value="Done" selected>Done</option>
+                <option value="Not Yet">No Yet</option>
+              </select>
+              <% } else if (query.complete=='false' ){ %>
+              <select name="complete" id="complete">
+                <option disabled>-select complete-</option>
+                <option value="Done">Done</option>
+                <option value="Not Yet" selected>Not Yet</option>
+              </select>
+              <% } else {%>
+              <select name="complete" id="complete  ">
+                <option disabled selected>-select complete-</option>
+                <option value="Done">Done</option>
+                <option value="Not Yet">Not Yet</option>
+              </select>
+              <% } %>
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-20">
+            <legend>Operation</legend>
+        </div>
+          <div class="col-80">
+            <% if(query.radio_button=='OR' ) { %> 
+              <input type="radio" id="OR" name="radio_button" value="OR" checked= />OR
+            <input type="radio" id="AND" name="radio_button" value="AND" />AND
+             <% }else if(query.radio_button=='AND' ) { %> 
+              <input type="radio" id="OR" name="radio_button" value="OR" />OR
+            <input type="radio" id="AND" name="radio_button" value="AND" checked />AND
+             <% }else { %> 
+              <input type="radio" id="OR" name="radio_button" value="OR" />OR 
+              <input type="radio" id="AND" name="radio_button" value="AND" />AND 
+              <% } %>
+          </div>
+        </div>
+        <br>
+        <br>    
+          <!--submit button-->
+          <div>
+            <button type="submit" class="add-search"><img src="/images/sch.png"></button>
+            <a  class="add-reset" href="/"><img src="/images/re.png"></a>
+          </div>
+        </form>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Title</th>
+            <th>Complete</th>
+            <th>Deadline</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% data.forEach((daftar, index)=>{ %>
+            <% if (new Date(`${daftar.deadline}`).getTime()< new Date().getTime() && daftar.complete == false){ %>
+          <tr>
+            <td><%= index + offset + 1 %></td>
+            <td><%= daftar.title %></td>
+            <td><%= daftar.complete ? 'Done' : 'Not yet' %></td>
+            <td><%= moment(daftar.deadline).format('MMMM Do YYYY, h:mm:ss a') %></td>
+            <td><a  href="/todos/edit/<%= daftar.id %>" class="btn-update"><img src="/images/updt.png"></a>
+              <a href="/todos/delete/<%= daftar.id %>" onclick="return confirmation('<%= daftar.name %>')" class="btn-delete"><img src="/images/dlet.png"></a></td>
+          </tr>
+          <% } else {%>
+            <tr>
+              <td><%= index + offset + 1 %></td>
+              <td><%= daftar.title %></td>
+              <td><%= daftar.complete ? 'Done' : 'Not yet' %></td>
+              <td><%= moment(daftar.deadline).format('MMMM Do YYYY, h:mm:ss a') %></td>
+              <td><a  href="/todos/edit/<%= daftar.id %>" class="btn-update"><img src="/images/updt.png"></a>
+                <a href="/todos/delete/<%= daftar.id %>" onclick="return confirmation('<%= daftar.name %>')" class="btn-delete"><img src="/images/dlet.png"></a></td>
+            </tr>
+           <% } %>
+          <% }) %>
+        </tbody>
+      </table>
+  <div class="bawah">
+      <a href="/todos/add/<%= usersid %>" class="btn btn-primary"><img src="/images/ad.png"></a> 
+      <div class="pagination">
+        <% if (page > 1){%>
+        <a href="<%=url.includes('page=')?  url.replace(`page=${page}`, `page=${Number(page) -1}`):`?page=${Number(page) -1}`%>">&laquo;</a>
+        <% } %>
+
+      <% for(let i=1; i <=pages; i++){%>
+      <a href="<%=url.includes('page=')? `/?${url.slice(2).replace(`page=${page}`, `page=${i}`)}`:`/?page=${i}` %>"> <%= i %> </a>
+      <% } %>
+
+      <% if (page < pages) {%>
+      <a href="<%=url.includes('page=')?  url.replace(`page=${page}`, `page=${Number(page) +1}`):`?page=${Number(page) +1}`%>">&raquo;</a>
+      <% } %>
+
+      <%- include('../partials/footer.ejs')%>
+
+    </div>
+    </div>
+  </body>
+</html>
