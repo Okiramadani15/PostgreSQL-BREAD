@@ -10,6 +10,8 @@
 </head>
 
 <body>
+    <div class="header-add">
+   <div class="h2-add"><h2>Adding Data</h2></div>
     <form action="" method="post" class="add-container" >
         <label for="title">title</label>
         <input type="text" class="add-box" name="title" placeholder="insert your title" value="<%= item.title %>" required/>
@@ -21,11 +23,12 @@
             <option value="Done">Done</option>
             <option value="Not Yet">Not Yet</option>
         </select>
-        <div>
-        <button type="submit" class="add-save"><img src="/images/ssve.png"/></button>&nbsp;
-        <button class="add-cancel" href="/" ><img src="/images/rounded.png"/></button>
-    </div>
+    <div class="bawah-add">
+        <button type="submit" class="add-save"><img src="/images/ssve.png" /></button>&nbsp;
+        <button class="add-cancel" href="/"><img src="/images/rounded.png" /></button>
+      </div>
     </form>
+    </div>
 </body>
 
 </html>

@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-const path = require('path')
+const path = require("path");
 
 //  GET home page
 module.exports = function (db) {
@@ -23,9 +23,9 @@ module.exports = function (db) {
           req.flash("failedInfo", "Password is wrong");
           return res.redirect("/");
         }
-        req.session.users = { email: users[0].email, usersid: users[0].id, avatar: users[0].avatar };
+        req.session.user = { email: users[0].email, usersid: users[0].id, avatar: users[0].avatar };
         req.flash("successInfo", "anda berhasil login");
-        res.redirect("./todos");
+        res.redirect("/todos");
       }
     } catch (e) {
       console.log(e);
@@ -34,18 +34,22 @@ module.exports = function (db) {
   });
 
   router.get("/register", function (req, res) {
-    res.render("register");
+    res.render("register", { failedInfo: req.flash("failedInfo"), successInfo: req.flash("successInfo") });
   });
 
   router.post("/register", async function (req, res) {
     const { email, password, repassword } = req.body;
     if (password !== repassword) {
+      req.flash("failedInfo", "password doesn't match");
       res.redirect("/register");
     } else {
       const hash = bcrypt.hashSync(password, saltRounds);
       try {
         const { rows: users } = await db.query('SELECT * FROM "users" WHERE email = $1', [email]);
+        console.log(users)
         if (users.length > 0) {
+          console.log("masuk sini")
+          req.flash("failedInfo", "users already exist");
           res.redirect("/register");
         } else {
           await db.query('INSERT INTO "users" (email, password) VALUES ($1, $2)', [email, hash]);
@@ -74,19 +78,18 @@ module.exports = function (db) {
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).send("No files were uploaded.");
     }
-    const avatar = req.files.avatar
-    let avatarName = Date.now() + '-' + avatar.name;
-    uploadPath = path.join(__dirname, '..', 'public', 'images', avatarName);
-  
+    const avatar = req.files.avatar;
+    let avatarName = Date.now() + "-" + avatar.name;
+    uploadPath = path.join(__dirname, "..", "public", "images", avatarName);
+
     avatar.mv(uploadPath, async function (err) {
-      if (err) 
-      return res.status(500).send(err);
-     try{
-        await db.query('UPDATE users SET avatar = $1 WHERE id = $2', [avatarName, req.params.id])
-        res.redirect('/todos')
-     } catch(err) {
-      console.log(err)
-     }
+      if (err) return res.status(500).send(err);
+      try {
+        await db.query("UPDATE users SET avatar = $1 WHERE id = $2", [avatarName, req.params.id]);
+        res.redirect("/todos");
+      } catch (err) {
+        console.log(err);
+      }
     });
   });
 

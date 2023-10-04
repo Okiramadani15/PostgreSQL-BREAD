@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tambah Data</title>
-    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="/stylesheets/style.css">
-</head>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
 
-<body>
-    <form action="" method="post" class="add-container" >
+  <body>
+    <div class="header-add">
+      <div class="h2-add"><h2>Updating Data</h2></div>
+      <form action="" method="post" class="add-container">
         <label for="Title">Title</label>
-        <input type="text" class="add-box" name="title" placeholder="Input your title" required/>
+        <input type="text" class="add-box" name="title" placeholder="Input your title" required />
         <label for="Deadline">Deadline</label>
-        <input type="date" class="add-box" name = 'Deadline' placeholder="yyyy/mm/dd" required/>
+        <input type="date" class="add-box" name="Deadline" placeholder="yyyy/mm/dd" required />
         <label for="Complete">Complete</label>
         <select name="Complete" class="add-box" required>
-            <option disabled selected>-select complete- </option>
-            <option value="Yes">Done</option>
-            <option value="Not Yet">Not Yet</option>
+          <option disabled selected>-select complete-</option>
+          <option value="true">Done</option>
+          <option value="false">Not Yet</option>
         </select>
-        <div>
-        <button type="submit" class="add-save">Save</button>&nbsp;
-        <button class="add-cancel" href="/" >Back</button>
+        <div class="bawah-add">
+          <button type="submit" class="add-save"><img src="/images/ssve.png" /></button>&nbsp;
+          <button class="add-cancel" href="/"><img src="/images/rounded.png" /></button>
+        </div>
+      </form>
     </div>
-    </form>
-</body>
-
+  </body>
 </html>

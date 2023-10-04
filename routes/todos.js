@@ -7,25 +7,27 @@ var { isLoggedIn } = require("../helpers/util");
 
 module.exports = function (db) {
   router.get("/", isLoggedIn, async function (req, res, next) {
-    const { page = 1, title, startDate, endDate, complete, type_search = "id", sort = "", typeSort="" } = req.query;
-    const {usersid} = req.session.users
+    const { page = 1, title, startDate, endDate,deadline,complete, type_search = "id", sort = "", typeSort="" } = req.query;
+    const {usersid} = req.session.user
     const queries = [];
     const params = [];
-    ` `;
     const paramscount = [];
     const limit = 5;
     const offset = (page - 1) * 5;
-    
+    console.log(title)
 
-    const { rows : profil } = await db.query('SELECT * FROM users WHERE id = $1', [req.session.users.usersid]);
+    const { rows : profil } = await db.query('SELECT * FROM users WHERE id = $1', [req.session.user.usersid]);
     console.log(profil)
-    // params.push(req.session.users.usersid)
-    // paramscount.push(req.session.users.usersid)
+
+
+    let sqlcount = "SELECT COUNT (*) AS total FROM todos WHERE userid=$1";
+    paramscount.push(req.session.user.usersid)
+    params.push(req.session.user.usersid)
 
     if (title) {
       params.push(title);
       paramscount.push(title);
-      queries.push(`title like '%' || $${params.length} || '%'`);
+      queries.push(`title ilike '%' || $${params.length} || '%'`);
     }
 
     if (startDate && endDate) {
@@ -39,17 +41,15 @@ module.exports = function (db) {
     } else if (endDate) {
       params.push(endDate);
       paramscount.push(endDate);
-      queries.push(`deadline <= $${params.length}`);
+      queries.push(`deadline <= $${params.length}`);  
     }
 
     if (complete) {
-      params.push(JSON.parse(complete));
-      paramscount.push(JSON.parse(complete));
+      params.push(complete);
+      paramscount.push(complete);
       queries.push(`complete = $${params.length}`);
     }
-
-    let sqlcount = "SELECT COUNT (*) AS total FROM public.todos";
-    let sql = `SELECT * FROM todos`;
+    let sql = `SELECT * FROM todos WHERE userid=$1`;
     if (queries.length > 0) {
       sql += ` AND (${queries.join(` ${type_search} `)})`;
       sqlcount += ` AND (${queries.join(` ${type_search} `)})`;
@@ -61,13 +61,13 @@ module.exports = function (db) {
 
     params.push(limit, offset);
     sql += ` LIMIT $${params.length - 1} OFFSET $${params.length}`;
-    console.log(sql)
 
     db.query(sqlcount, paramscount, (err, { rows: data }) => {
       if (err) res.send(err);
       else {
         const total = data[0].total;
         const pages = Math.ceil(total / limit);
+        console.log(sqlcount, sql)
         db.query(sql, params, (err, { rows: data }) => {
           if (err) res.render(err);
           else
@@ -82,7 +82,7 @@ module.exports = function (db) {
               typeSort,
               usersid,
               avatar: profil[0].avatar,
-              users: req.session.users,
+              users: req.session.user,
               failedInfo: req.flash("failedInfo"),
               successInfo: req.flash("successInfo"),
             });
@@ -96,7 +96,8 @@ module.exports = function (db) {
   });
 
   router.post("/add/:userid", (req, res) => {
-    db.query("INSERT INTO todos (title, userid) VALUES ($1, $2)", [req.body.title, req.params.userid], (err) => {
+    console.log(req.body)
+    db.query("INSERT INTO todos (title,complete,deadline,userid) VALUES ($1, $2,$3,$4)", [req.body.title, JSON.parse(req.body.Complete), req.body.Deadline, req.params.userid], (err) => {
       if (err) res.send(err);
       else res.redirect("/todos");
     });

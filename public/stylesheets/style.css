@@ -2,21 +2,29 @@
   box-sizing: border-box;
 }
 
-
+.text{
+  margin-top: 30px;
+  margin-left: 80px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  
+}
 .profil{
   margin-left: 10px;
   margin-top: 10px;
+  display: flex;
+  justify-content: flex-start;
 }
 
+.form-control {
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-left: -5px;
 
+}
 
 .avatar {
   border: 2px solid #ccc;
   border-radius: 5px;
-}
-
-.text{
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .body2{
@@ -24,18 +32,24 @@
   border-radius: 5px;
 }
  .h2{
-  border: 1px solid #ccc;
-  border-radius: 5px;
   text-align: center;
   background-color: #f2f2f2;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 
  }
+ .h2-add{
+  border: 1px solid #ccc;
+  text-align: center;
+  background-color: #f2f2f2;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: bold;
+
+ }
 
 .welcome{
   border: 1px solid #ccc;
-  border-radius: 5px;
   background-color:#f2f2f2 ;
+  
 }
 body {
   margin-right: 15%;
@@ -45,7 +59,10 @@ body {
   font-size: small;
 }
 
-
+.header-add{
+  border: 1px solid #ccc;
+  
+}
   
 /* list */
 
@@ -182,37 +199,48 @@ input[type="text"],input[type="number"],select {
 .add-cancel {
   color: black;
   background-color: #f58b2b;
-  padding: 3px;
+  padding: 10px;
   height: 40px;
   font-size: 15px;
   font-weight: bold;
-  width: 10%;
-  margin-right: 10px;
+  width: 5%;
+  margin-right: 5px;
   border-radius: 10px;
   border: 1px solid grey;
+}
+
+.bawah{
+  background-color: #f2f2f2;
+  padding: 20px;
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+
 
 }
-.bawah{
-  padding: 1px ;
-  
+
+.bawah-add{
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  padding: 20px;
+
+
 }
+
 .pagination {
-  float: right;
-  text-align: center;
-  margin-bottom: 80%;
-  border: 1px solid blue; /* Gray */
+  display: inline-flex;
   margin-right: 10px;
 
 }
 
-.pagination a {
+/* .pagination a {
   color: blue;
   float: left;
   border:3px green;
   padding: 8px 16px;
   text-decoration: none; 
   text-align: center;
-}
+} */
 
 
 .pagination a:hover:not(.active) {background-color:gainsboro;}
@@ -251,14 +279,12 @@ input[type="text"],input[type="number"],select {
 
 }
 
-.bawah{
-  margin-left: 10px;
-  margin-bottom: 10px;
-}
+
+
 
 .logout {
-  margin-left: 940px;
-  margin-bottom: 10px;
+  margin-left: 320px;
+  margin-top: 30px;
   color: white;
   background-color:dimgray;
   padding: 10px;
