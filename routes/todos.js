@@ -7,14 +7,13 @@ var { isLoggedIn } = require("../helpers/util");
 
 module.exports = function (db) {
   router.get("/", isLoggedIn, async function (req, res, next) {
-    const { page = 1, title, startDate, endDate,deadline,complete, type_search = "id", sort = "", typeSort="DESC" } = req.query;
+    const { page = 1, title, startDate, endDate,deadline,complete, type_search = "", sort = "desc", typeSort="id" } = req.query;
     const {usersid} = req.session.user
     const queries = [];
     const params = [];
     const paramscount = [];
     const limit = 5;
     const offset = (page - 1) * 5;
-    console.log(title)
 
     const { rows : profil } = await db.query('SELECT * FROM users WHERE id = $1', [req.session.user.usersid]);
     console.log(profil)
@@ -56,7 +55,7 @@ module.exports = function (db) {
     }
 
     if (sort) {
-      sql += ` ORDER BY ${sort} ${typeSort}`;
+      sql += ` ORDER BY ${typeSort} ${sort}`;
     }
 
     params.push(limit, offset);
@@ -65,8 +64,9 @@ module.exports = function (db) {
     db.query(sqlcount, paramscount, (err, { rows: data }) => {
       if (err) res.send(err);
       else {
+        const url = req.url == '/' ? `page=${page}&typeSort=${typeSort}&sort=${sort}` : req.url
         const total = data[0].total;
-        const pages = Math.ceil(total / limit);
+        const pages = Math.ceil(total / limit); 
         console.log(sqlcount, sql)
         db.query(sql, params, (err, { rows: data }) => {
           if (err) res.render(err);
@@ -77,14 +77,15 @@ module.exports = function (db) {
               pages,
               offset,
               page,
-              url: req.url,
               moment,
               typeSort,
+              sort,
               usersid,
               avatar: profil[0].avatar,
               users: req.session.user,
               failedInfo: req.flash("failedInfo"),
               successInfo: req.flash("successInfo"),
+              url
             });
         });
       }
@@ -96,7 +97,6 @@ module.exports = function (db) {
   });
 
   router.post("/add/:userid", (req, res) => {
-    console.log(req.body)
     db.query("INSERT INTO todos (title,complete,deadline,userid) VALUES ($1, $2,$3,$4)", [req.body.title, JSON.parse(req.body.Complete), req.body.Deadline, req.params.userid], (err) => {
       if (err) res.send(err);
       else res.redirect("/todos");
@@ -113,9 +113,7 @@ module.exports = function (db) {
 
   router.post("/edit/:index", (req, res) => {
     const index = req.params.index;
-    console.log(req.body)
     const { title, deadline, complete } = req.body;
-    console.log(req.body)
     db.query("UPDATE todos SET title = $1, complete = $2, deadline = $3 WHERE id = $4", [title, Boolean(complete), deadline, index], (err, data) => {
       if (err) res.send(err);
       else res.redirect("/todos");

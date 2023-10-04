@@ -6,6 +6,7 @@
     <title>BREAD</title>
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/fontawesome/css/all.css"/>
   </head>
 
   <body>
@@ -101,9 +102,11 @@
         <thead>
           <tr>
             <th>No.</th>
-            <th>Title <a href="/todos?page=1&sort=title&typeSort=asc"><img src="/images/caretup.svg"></a><a href="/todos?page=1&sort=title&typeSort=desc"><img src="/images/caretdown.svg"></a></th>
-            <th>Complete <a href="/todos?page=1&sort=complete&typeSort=asc"><img src="/images/caretup.svg"></a><a href="/todos?page=1&sort=complete&typeSort=desc"><img src="/images/caretdown.svg"></a></th>
-            <th>Deadline <a href="/todos?page=1&sort=deadline&typeSort=asc"><img src="/images/caretup.svg"></a><a href="/todos?page=1&sort=deadline&typeSort=desc"><img src="/images/caretdown.svg"></a></th>
+            <th>Title     <a style="color: black;" href="/todos?<%= url.replace(`typeSort=${typeSort}`, `typeSort=title`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'title' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
+            <th>Complete  <a style="color: black;" href="/todos?<%= url.replace(`typeSort=${typeSort}`, `typeSort=title`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'title' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
+            <th>Deadline  <a style="color: black;" href="/todos?<%= url.replace(`typeSort=${typeSort}`, `typeSort=title`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'title' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
+         
+            </th>
             <th>Action</th>
           </tr>
         </thead>
