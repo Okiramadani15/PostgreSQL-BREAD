@@ -7,7 +7,7 @@ var { isLoggedIn } = require("../helpers/util");
 
 module.exports = function (db) {
   router.get("/", isLoggedIn, async function (req, res, next) {
-    const { page = 1, title, startDate, endDate,deadline,complete, type_search = "id", sort = "", typeSort="" } = req.query;
+    const { page = 1, title, startDate, endDate,deadline,complete, type_search = "id", sort = "", typeSort="DESC" } = req.query;
     const {usersid} = req.session.user
     const queries = [];
     const params = [];
