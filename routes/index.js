@@ -49,7 +49,7 @@ module.exports = function (db) {
         console.log(users)
         if (users.length > 0) {
           console.log("masuk sini")
-          req.flash("failedInfo", "users already exist");
+          req.flash("failedInfo", "user already exist");
           res.redirect("/register");
         } else {
           await db.query('INSERT INTO "users" (email, password) VALUES ($1, $2)', [email, hash]);
