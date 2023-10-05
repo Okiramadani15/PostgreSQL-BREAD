@@ -102,9 +102,9 @@
         <thead>
           <tr>
             <th>No.</th>
-            <th>Title     <a style="color: black;" href="/todos?<%= url.replace(`typeSort=${typeSort}`, `typeSort=title`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'title' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
-            <th>Complete  <a style="color: black;" href="/todos?<%= url.replace(`typeSort=${typeSort}`, `typeSort=title`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'title' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
-            <th>Deadline  <a style="color: black;" href="/todos?<%= url.replace(`typeSort=${typeSort}`, `typeSort=title`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'title' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
+            <th>Title     <a style="color: black;" href="/todos<%= url.replace(`typeSort=${typeSort}`, `typeSort=title`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'title' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
+            <th>Complete  <a style="color: black;" href="/todos<%= url.replace(`typeSort=${typeSort}`, `typeSort=title`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'title' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
+            <th>Deadline  <a style="color: black;" href="/todos<%= url.replace(`typeSort=${typeSort}`, `typeSort=title`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'title' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
          
             </th>
             <th>Action</th>
@@ -129,9 +129,10 @@
             </td>
             <td style="background-color: #ff564a;">
               <a  href="/todos/edit/<%= daftar.id %>" class="btn-update"><img src="/images/updt.png"></a>
-              <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn-delete"><img src="/images/dlet.png"></button>
-            </td>
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <button data-bs-toggle="modal" data-bs-target="#exampleModal<%= daftar.id %>" class="btn-delete"><img src="/images/dlet.png"></button>
+              </td> 
+            </tr>
+            <div class="modal fade" id="exampleModal<%= daftar.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -148,7 +149,7 @@
                 </div>
               </div>
             </div>
-             
+  
           </tr>
           <% } else {%>
             <tr>
@@ -157,10 +158,10 @@
               <td><%= daftar.complete ? 'Done' : 'Not yet' %></td>
               <td><%= moment(daftar.deadline).format('MMMM Do YYYY, h:mm:ss a') %></td>
               <td><a href="/todos/edit/<%= daftar.id %>" class="btn-update"><img src="/images/updt.png"></a>
-                <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn-delete"><img src="/images/dlet.png"></button>
+                <button data-bs-toggle="modal" data-bs-target="#exampleModal<%= daftar.id %>" class="btn-delete"><img src="/images/dlet.png"></button>
               </td> 
             </tr>
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="exampleModal<%= daftar.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -177,10 +178,7 @@
                 </div>
               </div>
             </div>
-            
-            
-           <% } %>
-              
+           <% } %> 
           <% }) %>
         </tbody>
       </table>
@@ -193,7 +191,7 @@
         <% } %>
 
       <% for(let i=1; i <=pages; i++){%>
-      <a class="page-link" href="/todos<%=url.includes('page=')? `/?${url.slice(2).replace(`page=${page}`, `page=${i}`)}`:`/?page=${i}` %>"> <%= i %> </a>
+      <a class="page-link" href="/todos<%=url.includes('page=')? url.replace(`page=${page}`, `page=${i}`):`?page=${i}` %>"> <%= i %> </a>
       <% } %>
 
       <% if (page < pages) {%>

@@ -3,6 +3,7 @@ var router = express.Router();
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const path = require("path");
+const { isLoggedIn } = require("../helpers/util");
 
 //  GET home page
 module.exports = function (db) {
@@ -66,27 +67,39 @@ module.exports = function (db) {
     });
   });
 
-  router.get("/upload/:id", function (req, res) {
-    res.render("partials/upload");
+  router.get("/upload/:id", isLoggedIn, function (req, res) {
+    res.render("partials/upload", { preAvatar: req.session.user.avatar });
   });
 
-  router.post("/upload/:id", async function (req, res) {
-    let sampleFile;
+  router.post("/upload/:id", isLoggedIn, async function (req, res) {
+    let avatar;
     let uploadPath;
+    console.log(req.files);
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).send("No files were uploaded.");
     }
-    const avatar = req.files.avatar;
-    let avatarName = Date.now() + "-" + avatar.name;
-    uploadPath = path.join(__dirname, "..", "public", "images", avatarName);
+
+    avatar = req.files.avatar;
+    let fileName = startDate.now() + "_" + avatar.name;
+    uploadPath = path.join(__dirname, "..", "public", "images", fileName);
 
     avatar.mv(uploadPath, async function (err) {
       if (err) return res.status(500).send(err);
       try {
-        await db.query("UPDATE users SET avatar = $1 WHERE id = $2", [avatarName, req.params.id]);
-        res.redirect("/todos");
-      } catch (err) {
-        console.log(err);
+        const { rows: profil } = await db.query('SELECT * FROM "users" WHERE id = $1', [req.params.usersid]);
+        if (profil[0].avatar) {
+          const filePath = path.join(__dirname, "..", "public", "images", profil[0].avatar);
+          try {
+            fs.unlinkSync(filePath);
+          } catch {
+            const { rows } = await db.query('UPstartDate "users" SET avatar = $1 WHERE id = $2', [fileName, req.params.id]);
+            res.redirect("/todos");
+          }
+        }
+        const { rows } = await db.query('UPstartDate "users" SET avatar = $1 WHERE id = $2', [fileName, req.params.id]);
+        res.redirect("/users");
+      } catch {
+        res.send(err);
       }
     });
   });

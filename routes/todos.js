@@ -2,26 +2,23 @@ var express = require("express");
 var router = express.Router();
 const path = require("path");
 const fs = require("fs");
-const moment = require ('moment')
+const moment = require("moment");
 var { isLoggedIn } = require("../helpers/util");
 
 module.exports = function (db) {
   router.get("/", isLoggedIn, async function (req, res, next) {
-    const { page = 1, title, startDate, endDate,deadline,complete, type_search = "", sort = "desc", typeSort="id" } = req.query;
-    const {usersid} = req.session.user
+    const { page = 1, title, startDate, endDate, deadline, complete, type_search = "", sort = "desc", typeSort = "id" } = req.query;
+    const { usersid } = req.session.user;
     const queries = [];
     const params = [];
     const paramscount = [];
     const limit = 5;
     const offset = (page - 1) * 5;
-
-    const { rows : profil } = await db.query('SELECT * FROM users WHERE id = $1', [req.session.user.usersid]);
-    console.log(profil)
-
+    const { rows: profil } = await db.query("SELECT * FROM users WHERE id = $1", [req.session.user.usersid]);
 
     let sqlcount = "SELECT COUNT (*) AS total FROM todos WHERE userid=$1";
-    paramscount.push(req.session.user.usersid)
-    params.push(req.session.user.usersid)
+    paramscount.push(req.session.user.usersid);
+    params.push(req.session.user.usersid);
 
     if (title) {
       params.push(title);
@@ -40,7 +37,7 @@ module.exports = function (db) {
     } else if (endDate) {
       params.push(endDate);
       paramscount.push(endDate);
-      queries.push(`deadline <= $${params.length}`);  
+      queries.push(`deadline <= $${params.length}`);
     }
 
     if (complete) {
@@ -64,13 +61,13 @@ module.exports = function (db) {
     db.query(sqlcount, paramscount, (err, { rows: data }) => {
       if (err) res.send(err);
       else {
-        const url = req.url == '/' ? `page=${page}&typeSort=${typeSort}&sort=${sort}` : req.url
+        const url = req.url == "/" ? `/?page=${page}&typeSort=${typeSort}&sort=${sort}` : req.url;
         const total = data[0].total;
-        const pages = Math.ceil(total / limit); 
-        console.log(sqlcount, sql)
+        const pages = Math.ceil(total / limit);
         db.query(sql, params, (err, { rows: data }) => {
           if (err) res.render(err);
-          else
+          else {
+            console.log(url)
             res.render("users/list", {
               data,
               query: req.query,
@@ -85,15 +82,16 @@ module.exports = function (db) {
               users: req.session.user,
               failedInfo: req.flash("failedInfo"),
               successInfo: req.flash("successInfo"),
-              url
+              url,
             });
+          }
         });
       }
     });
   });
 
   router.get("/add/:userid", (req, res) => {
-    res.render("users/add", { users: req.session.users});
+    res.render("users/add", { users: req.session.users });
   });
 
   router.post("/add/:userid", (req, res) => {
@@ -107,7 +105,7 @@ module.exports = function (db) {
     const index = req.params.index;
     db.query("SELECT * FROM todos WHERE id = $1", [index], (err, { rows: data }) => {
       if (err) res.send(err);
-       else res.render("users/edit", { item: data[0], moment });
+      else res.render("users/edit", { item: data[0], moment });
     });
   });
 
@@ -128,42 +126,5 @@ module.exports = function (db) {
     });
   });
 
-  router.get("/upload/:id", function (req, res) {
-    res.render("users/upload", { prevAvatar: req.session.users.avatar });
-  });
-
-  router.post("/upload/:id", async function (req, res) {
-    let avatar;
-    let uploadPath;
-    console.log(req.files)
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send("No files were uploaded.");
-    }
-
-    avatar = req.files.avatar;
-    let fileName = startDate.now() + "_" + avatar.name;
-    uploadPath = path.join(__dirname, "..", "public", "images", fileName);
-
-    avatar.mv(uploadPath, async function (err) {
-      if (err) return res.status(500).send(err);
-      try {
-        const { rows: profil } = await db.query('SELECT * FROM "users" WHERE id = $1', [req.params.usersid]);
-        if (profil[0].avatar) {
-          const filePath = path.join(__dirname, "..", "public", "images", profil[0].avatar);
-          try {
-            fs.unlinkSync(filePath);
-          } catch {
-            const { rows } = await db.query('UPstartDate "users" SET avatar = $1 WHERE id = $2', [fileName, req.params.id]);
-            res.redirect("/todos");
-          }
-        }
-        const { rows } = await db.query('UPstartDate "users" SET avatar = $1 WHERE id = $2', [fileName, req.params.id]);
-        res.redirect("/users");
-      } catch {
-        res.send(err);
-      }
-    });
-  });
- 
   return router;
 };
