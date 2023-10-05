@@ -27,12 +27,15 @@
       <!-- search -->
       <div>
         <form action="" method="get" class="add-container">
+          <input type="hidden" name="page" value="1">
+          <input type="hidden" name="sort" value="desc">
+          <input type="hidden" name="typeSort" value="id">
           <div class="row">
             <div class="col-20">
               <label for="name">Title</label>
             </div>
             <div class="col-80">
-              <input type="text" class="add-box" name="title" placeholder="insert your title" value="<%= query.name %>" />
+              <input type="text" class="add-box" name="title" placeholder="insert your title" value="<%= query.title %>" />
             </div>
           </div>
           <div class="row">
@@ -50,23 +53,23 @@
               <label for="married">Complete</label>
             </div>
             <div class="col-80">
-              <%if(query.complete=='done' ){ %>
+              <%if(query.complete=='true' ){ %>
               <select name="complete" id="complete">
                 <option disabled>-select complete-</option>
-                <option value="Done" selected>Done</option>
-                <option value="Not Yet">No Yet</option>
+                <option value="true" selected>Done</option>
+                <option value="false">No Yet</option>
               </select>
-              <% } else if (query.complete=='not yet' ){ %>
+              <% } else if (query.complete=='false' ){ %>
               <select name="complete" id="complete">
                 <option disabled>-select complete-</option>
-                <option value="Done">Done</option>
-                <option value="Not Yet" selected>Not Yet</option>
+                <option value="true">Done</option>
+                <option value="false" selected>Not Yet</option>
               </select>
               <% } else {%>
               <select name="complete" id="complete  ">
                 <option disabled selected>-select complete-</option>
-                <option value="Done">Done</option>
-                <option value="Not Yet">Not Yet</option>
+                <option value="true">Done</option>
+                <option value="false">Not Yet</option>
               </select>
               <% } %>
             </div>
@@ -77,15 +80,15 @@
             <legend>Operation</legend>
         </div>
           <div class="col-80">
-            <% if(query.radio_button=='OR' ) { %> 
-              <input type="radio" id="OR" name="radio_button" value="OR" checked= />OR
-            <input type="radio" id="AND" name="radio_button" value="AND" />AND
-             <% }else if(query.radio_button=='AND' ) { %> 
-              <input type="radio" id="OR" name="radio_button" value="OR" />OR
-            <input type="radio" id="AND" name="radio_button" value="AND" checked />AND
+            <% if(query.type_search=='OR' ) { %> 
+              <input type="radio" id="OR" name="type_search" value="OR" checked />OR
+            <input type="radio" id="AND" name="type_search" value="AND" />AND
+             <% }else if(query.type_search=='AND' ) { %> 
+              <input type="radio" id="OR" name="type_search" value="OR" />OR
+            <input type="radio" id="AND" name="type_search" value="AND" checked />AND
              <% }else { %> 
-              <input type="radio" id="OR" name="radio_button" value="OR" />OR 
-              <input type="radio" id="AND" name="radio_button" value="AND" />AND 
+              <input type="radio" id="OR" name="type_search" value="OR" checked />OR 
+              <input type="radio" id="AND" name="type_search" value="AND" />AND 
               <% } %>
           </div>
         </div>
@@ -103,8 +106,8 @@
           <tr>
             <th>No.</th>
             <th>Title     <a style="color: black;" href="/todos<%= url.replace(`typeSort=${typeSort}`, `typeSort=title`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'title' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
-            <th>Complete  <a style="color: black;" href="/todos<%= url.replace(`typeSort=${typeSort}`, `typeSort=title`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'title' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
-            <th>Deadline  <a style="color: black;" href="/todos<%= url.replace(`typeSort=${typeSort}`, `typeSort=title`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'title' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
+            <th>Complete  <a style="color: black;" href="/todos<%= url.replace(`typeSort=${typeSort}`, `typeSort=complete`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'complete' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
+            <th>Deadline  <a style="color: black;" href="/todos<%= url.replace(`typeSort=${typeSort}`, `typeSort=deadline`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'deadline' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
          
             </th>
             <th>Action</th>
@@ -191,7 +194,7 @@
         <% } %>
 
       <% for(let i=1; i <=pages; i++){%>
-      <a class="page-link" href="/todos<%=url.includes('page=')? url.replace(`page=${page}`, `page=${i}`):`?page=${i}` %>"> <%= i %> </a>
+      <a class="page-link<%= page == i ? ' active': ''%>" href="/todos<%=url.includes('page=')? url.replace(`page=${page}`, `page=${i}`):`?page=${i}` %>"> <%= i %> </a>
       <% } %>
 
       <% if (page < pages) {%>

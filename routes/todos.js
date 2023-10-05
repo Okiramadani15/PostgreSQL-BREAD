@@ -7,7 +7,7 @@ var { isLoggedIn } = require("../helpers/util");
 
 module.exports = function (db) {
   router.get("/", isLoggedIn, async function (req, res, next) {
-    const { page = 1, title, startDate, endDate, deadline, complete, type_search = "", sort = "desc", typeSort = "id" } = req.query;
+    const { page = 1, title, startDate, endDate, deadline, complete, type_search = "OR", sort = "desc", typeSort = "id" } = req.query;
     const { usersid } = req.session.user;
     const queries = [];
     const params = [];
@@ -43,12 +43,12 @@ module.exports = function (db) {
     if (complete) {
       params.push(complete);
       paramscount.push(complete);
-      queries.push(`complete = $${params.length}`);
+      queries.push(`complete=$${params.length}`);
     }
     let sql = `SELECT * FROM todos WHERE userid=$1`;
     if (queries.length > 0) {
-      sql += ` AND (${queries.join(` ${type_search} `)})`;
-      sqlcount += ` AND (${queries.join(` ${type_search} `)})`;
+      sql += ` AND ${queries.join(` ${type_search} `)}`;
+      sqlcount += ` AND ${queries.join(` ${type_search} `)}`;
     }
 
     if (sort) {
@@ -57,7 +57,7 @@ module.exports = function (db) {
 
     params.push(limit, offset);
     sql += ` LIMIT $${params.length - 1} OFFSET $${params.length}`;
-
+    console.log(sqlcount, paramscount)
     db.query(sqlcount, paramscount, (err, { rows: data }) => {
       if (err) res.send(err);
       else {

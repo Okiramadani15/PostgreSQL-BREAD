@@ -74,30 +74,35 @@ module.exports = function (db) {
   router.post("/upload/:id", isLoggedIn, async function (req, res) {
     let avatar;
     let uploadPath;
-    console.log(req.files);
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).send("No files were uploaded.");
     }
 
     avatar = req.files.avatar;
-    let fileName = startDate.now() + "_" + avatar.name;
+    let fileName = Date.now() + "_" + avatar.name;
     uploadPath = path.join(__dirname, "..", "public", "images", fileName);
 
     avatar.mv(uploadPath, async function (err) {
       if (err) return res.status(500).send(err);
       try {
-        const { rows: profil } = await db.query('SELECT * FROM "users" WHERE id = $1', [req.params.usersid]);
+        console.log(req.params)
+        const { rows: profil } = await db.query('SELECT * FROM "users" WHERE id = $1', [req.params.id]);
         if (profil[0].avatar) {
+          console.log('masuk')
           const filePath = path.join(__dirname, "..", "public", "images", profil[0].avatar);
           try {
+            console.log('masuk hapus')
             fs.unlinkSync(filePath);
+            
           } catch {
-            const { rows } = await db.query('UPstartDate "users" SET avatar = $1 WHERE id = $2', [fileName, req.params.id]);
+            console.log('masuk error')
+            const { rows } = await db.query('UPDATE "users" SET avatar = $1 WHERE id = $2', [fileName, req.params.id]);
             res.redirect("/todos");
           }
         }
-        const { rows } = await db.query('UPstartDate "users" SET avatar = $1 WHERE id = $2', [fileName, req.params.id]);
-        res.redirect("/users");
+        console.log('test')
+        const { rows } = await db.query('UPDATE "users" SET avatar = $1 WHERE id = $2', [fileName, req.params.id]);
+        res.redirect("/todos");
       } catch {
         res.send(err);
       }

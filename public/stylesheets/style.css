@@ -18,7 +18,14 @@
 .form-control {
   border-radius: 5px;
   margin-top: 5px;
-  margin-left: -5px;
+  margin-left: -30px;
+
+}
+
+.imgavatar{
+  border-radius: 5px;
+  margin-left: 188px;
+  margin-top: -15px;
 
 }
 
@@ -26,6 +33,7 @@
   border: 2px solid #ccc;
   border-radius: 5px;
 }
+
 
 .body2{
   border: 2px solid #ccc;
@@ -129,6 +137,16 @@ tr:nth-child(even) {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+.add-container1 {
+  margin: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 input[type="text"],input[type="number"],select {
   width: 100%;
   padding: 12px;
@@ -223,6 +241,18 @@ input[type="text"],input[type="number"],select {
   background-color: #f2f2f2;
   border: 1px solid #ccc;
   padding: 20px;
+  margin-top: 20px;
+  margin-bottom: -17px;
+
+}
+.bawah-add1{
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-top: 10px;
+  margin-bottom: -22px;
+  margin-right: -22px;
+  margin-left: -22px;
 
 
 }
@@ -244,6 +274,10 @@ input[type="text"],input[type="number"],select {
 
 
 .pagination a:hover:not(.active) {background-color:gainsboro;}
+
+.active{
+  background-color: #7474c2;
+}
 
 .btn-update{
   color: white;
