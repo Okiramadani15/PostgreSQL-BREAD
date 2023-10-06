@@ -1,44 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Data</title>
-    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="/stylesheets/style.css">
-</head>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
 
-<body>
+  <body>
     <div class="header-add">
-   <div class="h2-add"><h2>Adding Data</h2></div>
-    <form action="" method="post" class="add-container" >
+      <div class="h2-add"><h2>Adding Data</h2></div>
+      <form action="" method="post" class="add-container">
         <label for="title">title</label>
-        <input type="text" class="add-box" name="title" placeholder="insert your title" value="<%= item.title %>" required/>
+        <input type="text" class="add-box" name="title" placeholder="insert your title" value="<%= item.title %>" required />
         <label for="deadline">Deadline</label>
-        <input type="date" class="add-box" name = 'deadline' value="<%= moment(item.deadline).format('YYYY-MM-DD')%>"required/>
+        <input type="date" class="add-box" name="deadline" value="<%= moment(item.deadline).format('YYYY-MM-DD')%>" required />
         <label for="complete">Complete</label>
         <div class="row mb-3">
-            <div class="col-sm-10 offset-sm-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="complete"  name="complete" <=% item.complete ? ' checked' : '' %>>
-                <label class="form-check-label" for="complete">
-                  Done
-                </label>
-              </div>
+          <div class="col-sm-10 offset-sm-2">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="complete" name="complete" <%= item.complete ? ' checked' : '' %>
+              <label class="form-check-label" for="complete"> Done </label>
             </div>
           </div>
-        <!-- <select name="complete" class="add-box" required>
-            <option disabled selected><%= item.complete %></option>
-            <option value="true">Done</option>
-            <option value="false">Not Yet</option>
-        </select> -->
-    <div class="bawah-add1">
-        <button type="submit" class="add-save"><img src="/images/ssve.png" /></button>&nbsp;
-        <button class="add-cancel" href="/"><img src="/images/rounded.png" /></button>
-      </div>
-    </form>
+        </div>
+        <div class="bawah-add1">
+          <button type="submit" class="add-save"><img src="/images/ssve.png" /></button>&nbsp;
+          <a class="edit-cancel" href="/todos"><img src="/images/rounded.png" /></a>
+        </div>
+      </form>
     </div>
-</body>
-
+  </body>
 </html>

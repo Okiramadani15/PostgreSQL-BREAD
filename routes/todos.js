@@ -57,7 +57,7 @@ module.exports = function (db) {
 
     params.push(limit, offset);
     sql += ` LIMIT $${params.length - 1} OFFSET $${params.length}`;
-    console.log(sqlcount, paramscount)
+    console.log(sqlcount, paramscount);
     db.query(sqlcount, paramscount, (err, { rows: data }) => {
       if (err) res.send(err);
       else {
@@ -67,7 +67,7 @@ module.exports = function (db) {
         db.query(sql, params, (err, { rows: data }) => {
           if (err) res.render(err);
           else {
-            console.log(url)
+            console.log(url);
             res.render("users/list", {
               data,
               query: req.query,
