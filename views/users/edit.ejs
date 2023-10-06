@@ -16,14 +16,24 @@
         <label for="title">title</label>
         <input type="text" class="add-box" name="title" placeholder="insert your title" value="<%= item.title %>" required/>
         <label for="deadline">Deadline</label>
-        <input type="date" class="add-box" name = 'deadline' placeholder="yyyy/mm/dd" value="<%= item.deadline %>" required/>
-        <label for="complete">done</label>
-        <select name="complete" class="add-box" required>
+        <input type="date" class="add-box" name = 'deadline' value="<%= moment(item.deadline).format('YYYY-MM-DD')%>"required/>
+        <label for="complete">Complete</label>
+        <div class="row mb-3">
+            <div class="col-sm-10 offset-sm-2">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="complete"  name="complete" <=% item.complete ? ' checked' : '' %>>
+                <label class="form-check-label" for="complete">
+                  Done
+                </label>
+              </div>
+            </div>
+          </div>
+        <!-- <select name="complete" class="add-box" required>
             <option disabled selected><%= item.complete %></option>
-            <option value="Done">Done</option>
-            <option value="Not Yet">Not Yet</option>
-        </select>
-    <div class="bawah-add">
+            <option value="true">Done</option>
+            <option value="false">Not Yet</option>
+        </select> -->
+    <div class="bawah-add1">
         <button type="submit" class="add-save"><img src="/images/ssve.png" /></button>&nbsp;
         <button class="add-cancel" href="/"><img src="/images/rounded.png" /></button>
       </div>
